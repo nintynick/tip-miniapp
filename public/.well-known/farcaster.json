@@ -1,0 +1,16 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjAsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIn0",
+    "payload": "eyJkb21haW4iOiJ0aXAtbWluaWFwcC52ZXJjZWwuYXBwIn0",
+    "signature": "MHg..."
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "TIP Token",
+    "iconUrl": "https://tip-miniapp.vercel.app/icon-192.svg",
+    "homeUrl": "https://tip-miniapp.vercel.app",
+    "splashImageUrl": "https://tip-miniapp.vercel.app/splash.svg",
+    "splashBackgroundColor": "#9333ea",
+    "webhookUrl": "https://tip-miniapp.vercel.app"
+  }
+}

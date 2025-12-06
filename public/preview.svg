@@ -1,0 +1,6 @@
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#9333ea"/>
+  <text x="600" y="350" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="white" text-anchor="middle">TIP Token</text>
+  <text x="600" y="450" font-family="Arial, sans-serif" font-size="48" fill="#e9d5ff" text-anchor="middle">Tip, trade, and manage TIP tokens</text>
+  <text x="600" y="550" font-family="Arial, sans-serif" font-size="36" fill="#e9d5ff" text-anchor="middle">on Base Network</text>
+</svg>

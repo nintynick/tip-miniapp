@@ -22,6 +22,22 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 1,
   },
+  other: {
+    'fc:miniapp': JSON.stringify({
+      version: "1",
+      imageUrl: "https://tip-miniapp.vercel.app/preview.svg",
+      button: {
+        title: "TIP Token",
+        action: {
+          type: "launch_frame",
+          name: "TIP Token",
+          url: "https://tip-miniapp.vercel.app",
+          splashImageUrl: "https://tip-miniapp.vercel.app/splash.svg",
+          splashBackgroundColor: "#9333ea"
+        }
+      }
+    })
+  }
 };
 
 export default function RootLayout({
