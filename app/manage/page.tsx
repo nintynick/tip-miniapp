@@ -12,6 +12,9 @@ export default function ManagePage() {
   const [recipient, setRecipient] = useState('')
   const [allowanceAmount, setAllowanceAmount] = useState('')
   const [lookupAddress, setLookupAddress] = useState('')
+  const [balanceMultiplier, setBalanceMultiplier] = useState('')
+  const [tippingSentMultiplier, setTippingSentMultiplier] = useState('')
+  const [tippingReceivedMultiplier, setTippingReceivedMultiplier] = useState('')
 
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
@@ -29,6 +32,25 @@ export default function ManagePage() {
     abi: TIP_TOKEN_ABI,
     functionName: 'tipAllowance',
     args: lookupAddress && isAddress(lookupAddress) ? [lookupAddress as `0x${string}`] : undefined,
+  })
+
+  // Read current multipliers
+  const { data: currentBalanceMultiplier } = useReadContract({
+    address: TIP_TOKEN_ADDRESS,
+    abi: TIP_TOKEN_ABI,
+    functionName: 'balanceMultiplier',
+  })
+
+  const { data: currentTippingSentMultiplier } = useReadContract({
+    address: TIP_TOKEN_ADDRESS,
+    abi: TIP_TOKEN_ABI,
+    functionName: 'tippingSentMultiplier',
+  })
+
+  const { data: currentTippingReceivedMultiplier } = useReadContract({
+    address: TIP_TOKEN_ADDRESS,
+    abi: TIP_TOKEN_ABI,
+    functionName: 'tippingReceivedMultiplier',
   })
 
   const isOwner = address && owner && address.toLowerCase() === owner.toLowerCase()
@@ -52,6 +74,63 @@ export default function ManagePage() {
       })
     } catch (error) {
       console.error('Error setting allowance:', error)
+      alert('Error: ' + (error as Error).message)
+    }
+  }
+
+  const handleUpdateBalanceMultiplier = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      // Multiplier is scaled by 1e18 (e.g., 1 = 1e18, 2 = 2e18)
+      const multiplierWei = parseEther(balanceMultiplier)
+
+      writeContract({
+        address: TIP_TOKEN_ADDRESS,
+        abi: TIP_TOKEN_ABI,
+        functionName: 'updateBalanceMultiplier',
+        args: [multiplierWei],
+      })
+    } catch (error) {
+      console.error('Error updating balance multiplier:', error)
+      alert('Error: ' + (error as Error).message)
+    }
+  }
+
+  const handleUpdateTippingSentMultiplier = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      // Multiplier is scaled by 1e18 (e.g., 1 = 1e18, 2 = 2e18)
+      const multiplierWei = parseEther(tippingSentMultiplier)
+
+      writeContract({
+        address: TIP_TOKEN_ADDRESS,
+        abi: TIP_TOKEN_ABI,
+        functionName: 'updateTippingSentMultiplier',
+        args: [multiplierWei],
+      })
+    } catch (error) {
+      console.error('Error updating tipping sent multiplier:', error)
+      alert('Error: ' + (error as Error).message)
+    }
+  }
+
+  const handleUpdateTippingReceivedMultiplier = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      // Multiplier is scaled by 1e18 (e.g., 1 = 1e18, 2 = 2e18)
+      const multiplierWei = parseEther(tippingReceivedMultiplier)
+
+      writeContract({
+        address: TIP_TOKEN_ADDRESS,
+        abi: TIP_TOKEN_ABI,
+        functionName: 'updateTippingReceivedMultiplier',
+        args: [multiplierWei],
+      })
+    } catch (error) {
+      console.error('Error updating tipping received multiplier:', error)
       alert('Error: ' + (error as Error).message)
     }
   }
@@ -88,9 +167,157 @@ export default function ManagePage() {
           <Link href="/" className="text-blue-600 hover:underline text-sm">← Back</Link>
           <h1 className="text-3xl font-bold mt-2">👑 Manage Tip Allowances</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Set tip allowances for individual addresses
+            Set tip allowances and configure daily allowance parameters
           </p>
         </header>
+
+        {/* Daily Allowance Multipliers */}
+        <div className="bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900 dark:to-blue-900 rounded-lg p-6 shadow-lg space-y-4">
+          <h2 className="text-lg font-semibold">⚙️ Daily Allowance Parameters</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Configure the multipliers that determine how much daily tip allowance users receive.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Current Values Display */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Balance Multiplier</p>
+              <p className="text-2xl font-bold">
+                {currentBalanceMultiplier ? formatEther(currentBalanceMultiplier) : '1'}x
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Rewards holders</p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Tipping Sent</p>
+              <p className="text-2xl font-bold">
+                {currentTippingSentMultiplier ? formatEther(currentTippingSentMultiplier) : '1'}x
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Rewards tippers</p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Tipping Received</p>
+              <p className="text-2xl font-bold">
+                {currentTippingReceivedMultiplier ? formatEther(currentTippingReceivedMultiplier) : '1'}x
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Rewards recipients</p>
+            </div>
+          </div>
+
+          {/* Formula Explanation */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+            <p className="text-sm font-semibold mb-2">Daily Allowance Formula:</p>
+            <code className="text-xs bg-gray-100 dark:bg-gray-900 p-2 rounded block">
+              (Balance × Balance Mult.) + (Tips Sent × Sent Mult.) + (Tips Received × Received Mult.)
+            </code>
+          </div>
+
+          {/* Update Balance Multiplier */}
+          <form onSubmit={handleUpdateBalanceMultiplier} className="space-y-3">
+            <label className="block text-sm font-medium">Update Balance Multiplier</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={balanceMultiplier}
+                onChange={(e) => setBalanceMultiplier(e.target.value)}
+                placeholder="1.0"
+                step="0.1"
+                min="0"
+                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500"
+              />
+              <button
+                type="submit"
+                disabled={isPending || isConfirming || !balanceMultiplier}
+                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold rounded-lg transition"
+              >
+                Update
+              </button>
+            </div>
+            <div className="flex gap-2">
+              {['0.5', '1', '2', '5'].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setBalanceMultiplier(preset)}
+                  className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs hover:bg-gray-300 dark:hover:bg-gray-600"
+                >
+                  {preset}x
+                </button>
+              ))}
+            </div>
+          </form>
+
+          {/* Update Tipping Sent Multiplier */}
+          <form onSubmit={handleUpdateTippingSentMultiplier} className="space-y-3">
+            <label className="block text-sm font-medium">Update Tipping Sent Multiplier</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={tippingSentMultiplier}
+                onChange={(e) => setTippingSentMultiplier(e.target.value)}
+                placeholder="1.0"
+                step="0.1"
+                min="0"
+                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500"
+              />
+              <button
+                type="submit"
+                disabled={isPending || isConfirming || !tippingSentMultiplier}
+                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold rounded-lg transition"
+              >
+                Update
+              </button>
+            </div>
+            <div className="flex gap-2">
+              {['0.5', '1', '2', '5'].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setTippingSentMultiplier(preset)}
+                  className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs hover:bg-gray-300 dark:hover:bg-gray-600"
+                >
+                  {preset}x
+                </button>
+              ))}
+            </div>
+          </form>
+
+          {/* Update Tipping Received Multiplier */}
+          <form onSubmit={handleUpdateTippingReceivedMultiplier} className="space-y-3">
+            <label className="block text-sm font-medium">Update Tipping Received Multiplier</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={tippingReceivedMultiplier}
+                onChange={(e) => setTippingReceivedMultiplier(e.target.value)}
+                placeholder="1.0"
+                step="0.1"
+                min="0"
+                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500"
+              />
+              <button
+                type="submit"
+                disabled={isPending || isConfirming || !tippingReceivedMultiplier}
+                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold rounded-lg transition"
+              >
+                Update
+              </button>
+            </div>
+            <div className="flex gap-2">
+              {['0.5', '1', '2', '5'].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setTippingReceivedMultiplier(preset)}
+                  className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs hover:bg-gray-300 dark:hover:bg-gray-600"
+                >
+                  {preset}x
+                </button>
+              ))}
+            </div>
+          </form>
+        </div>
 
         {/* Lookup Allowance */}
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg space-y-4">

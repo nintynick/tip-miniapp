@@ -82,5 +82,113 @@ export const TIP_TOKEN_ABI = [
     "outputs": [{"internalType": "bool","name": "","type": "bool"}],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "balanceMultiplier",
+    "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tippingSentMultiplier",
+    "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tippingReceivedMultiplier",
+    "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address","name": "","type": "address"}],
+    "name": "totalTipsSent",
+    "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address","name": "","type": "address"}],
+    "name": "totalTipsReceived",
+    "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address","name": "","type": "address"}],
+    "name": "lastAllowanceUpdate",
+    "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address","name": "user","type": "address"}],
+    "name": "calculateDailyAllowance",
+    "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address","name": "user","type": "address"}],
+    "name": "updateDailyAllowance",
+    "outputs": [{"internalType": "bool","name": "","type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address[]","name": "users","type": "address[]"}],
+    "name": "batchUpdateDailyAllowances",
+    "outputs": [{"internalType": "bool","name": "","type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256","name": "newMultiplier","type": "uint256"}],
+    "name": "updateBalanceMultiplier",
+    "outputs": [{"internalType": "bool","name": "","type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256","name": "newMultiplier","type": "uint256"}],
+    "name": "updateTippingSentMultiplier",
+    "outputs": [{"internalType": "bool","name": "","type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256","name": "newMultiplier","type": "uint256"}],
+    "name": "updateTippingReceivedMultiplier",
+    "outputs": [{"internalType": "bool","name": "","type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{"indexed": false,"internalType": "uint256","name": "oldValue","type": "uint256"},{"indexed": false,"internalType": "uint256","name": "newValue","type": "uint256"}],
+    "name": "BalanceMultiplierUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{"indexed": false,"internalType": "uint256","name": "oldValue","type": "uint256"},{"indexed": false,"internalType": "uint256","name": "newValue","type": "uint256"}],
+    "name": "TippingSentMultiplierUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{"indexed": false,"internalType": "uint256","name": "oldValue","type": "uint256"},{"indexed": false,"internalType": "uint256","name": "newValue","type": "uint256"}],
+    "name": "TippingReceivedMultiplierUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{"indexed": true,"internalType": "address","name": "user","type": "address"},{"indexed": false,"internalType": "uint256","name": "allowanceAdded","type": "uint256"}],
+    "name": "DailyAllowanceUpdated",
+    "type": "event"
   }
 ] as const
