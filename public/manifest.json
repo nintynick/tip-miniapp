@@ -1,0 +1,30 @@
+{
+  "name": "TIP Token",
+  "short_name": "TIP",
+  "description": "Tip, trade, and manage TIP tokens on Base",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#9333ea",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "farcaster": {
+    "version": "1",
+    "manifestVersion": "1.0.0",
+    "homeUrl": "/",
+    "iconUrl": "/icon-192.png",
+    "splashImageUrl": "/splash.png",
+    "splashBackgroundColor": "#9333ea",
+    "webhookUrl": ""
+  }
+}
