@@ -1,10 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useAccount, useConnect, useReadContract } from 'wagmi'
 import { formatEther } from 'viem'
 import Link from 'next/link'
-import sdk from '@farcaster/miniapp-sdk'
 import { TIP_TOKEN_ADDRESS } from '@/lib/wagmi'
 import { TIP_TOKEN_ABI } from '@/lib/tip-abi'
 
@@ -35,10 +33,8 @@ export default function Home() {
     functionName: 'owner',
   })
 
-  useEffect(() => {
-    // Hide Farcaster splash screen
-    sdk.actions.ready()
-  }, [])
+  // SDK is already initialized in providers.tsx
+  // No need to call ready() again here
 
   const isOwner = address && owner && address.toLowerCase() === owner.toLowerCase()
 

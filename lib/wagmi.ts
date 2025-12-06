@@ -5,9 +5,10 @@ import { farcasterMiniApp as miniAppConnector } from '@farcaster/miniapp-wagmi-c
 export const config = createConfig({
   chains: [base],
   transports: {
-    [base.id]: http(),
+    [base.id]: http('https://mainnet.base.org'),
   },
   connectors: [miniAppConnector()],
+  ssr: true,
 })
 
 // TIP Token contract address on Base
