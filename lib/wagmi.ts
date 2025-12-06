@@ -1,18 +1,18 @@
 import { http, createConfig } from 'wagmi'
-import { base } from 'wagmi/chains'
+import { sepolia } from 'wagmi/chains'
 import { farcasterMiniApp as miniAppConnector } from '@farcaster/miniapp-wagmi-connector'
 
 export const config = createConfig({
-  chains: [base],
+  chains: [sepolia],
   transports: {
-    [base.id]: http('https://mainnet.base.org'),
+    [sepolia.id]: http('https://rpc.sepolia.org'),
   },
   connectors: [miniAppConnector()],
   ssr: true,
 })
 
-// TIP Token contract address on Base
-export const TIP_TOKEN_ADDRESS = '0x0E50aC29Ad2A5E1A22329C7797A429F094ceE84C' as const
+// TIP Token contract address on Sepolia (with daily allowance features)
+export const TIP_TOKEN_ADDRESS = '0x11aD1E7fc9809155E9e915b28C255645833E6Bdc' as const
 
 // Uniswap V2 Router on Base
 export const UNISWAP_V2_ROUTER = '0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24' as const
