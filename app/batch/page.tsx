@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { parseEther, isAddress } from 'viem'
 import Link from 'next/link'
@@ -22,16 +22,17 @@ export default function BatchPage() {
   const [completedBatches, setCompletedBatches] = useState(0)
 
   const { writeContract, data: hash, isPending } = useWriteContract()
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
-    hash,
-    onSuccess: () => {
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
+
+  const totalBatches = Math.ceil(parsedData.length / BATCH_SIZE)
+
+  // Handle successful transaction
+  useEffect(() => {
+    if (isSuccess && hash) {
       setCompletedBatches((prev) => prev + 1)
-      if (currentBatch < totalBatches - 1) {
-        // Auto-submit next batch
-        setTimeout(() => submitBatch(currentBatch + 1), 1000)
-      }
-    },
-  })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, hash])
 
   // Read contract owner
   const { data: owner } = useReadContract({
@@ -79,8 +80,6 @@ export default function BatchPage() {
     setCurrentBatch(0)
     setCompletedBatches(0)
   }
-
-  const totalBatches = Math.ceil(parsedData.length / BATCH_SIZE)
 
   const submitBatch = async (batchIndex: number) => {
     const start = batchIndex * BATCH_SIZE
