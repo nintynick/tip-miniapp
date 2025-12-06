@@ -7,7 +7,7 @@ export const TIP_TOKEN_ABI = [
     "type": "function"
   },
   {
-    "inputs": [{"internalType": "address","name": "owner","type": "address"},{"internalType": "address","name": "spender","type": "address"},{"internalType": "uint256","name": "amount","type": "uint256"}],
+    "inputs": [{"internalType": "address","name": "spender","type": "address"},{"internalType": "uint256","name": "amount","type": "uint256"}],
     "name": "approve",
     "outputs": [{"internalType": "bool","name": "","type": "bool"}],
     "stateMutability": "nonpayable",

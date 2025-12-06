@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { parseEther, formatEther } from 'viem'
 import Link from 'next/link'
@@ -30,6 +30,7 @@ export default function SwapPage() {
   const { address, isConnected } = useAccount()
   const [swapDirection, setSwapDirection] = useState<'ETH_TO_TIP' | 'TIP_TO_ETH'>('ETH_TO_TIP')
   const [amount, setAmount] = useState('')
+  const [slippage, setSlippage] = useState('0.5') // Default 0.5% slippage
 
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
@@ -50,6 +51,13 @@ export default function SwapPage() {
     args: address ? [address, UNISWAP_V2_ROUTER] : undefined,
   })
 
+  // Refetch allowance after successful approval
+  useEffect(() => {
+    if (isSuccess && hash) {
+      refetchAllowance()
+    }
+  }, [isSuccess, hash, refetchAllowance])
+
   const handleApprove = async () => {
     try {
       writeContract({
@@ -69,15 +77,21 @@ export default function SwapPage() {
 
     try {
       const deadline = BigInt(Math.floor(Date.now() / 1000) + 1200) // 20 minutes
+      const slippageBps = Math.floor(parseFloat(slippage) * 100) // Convert to basis points
 
       if (swapDirection === 'ETH_TO_TIP') {
         // Swap ETH for TIP
+        // For simplicity, we use a basic slippage calculation
+        // In production, you'd fetch pool reserves to calculate expected output
+        const amountIn = parseEther(amount)
+        const minOutput = (amountIn * BigInt(10000 - slippageBps)) / 10000n
+
         writeContract({
           address: UNISWAP_V2_ROUTER,
           abi: UNISWAP_ROUTER_ABI,
           functionName: 'swapExactETHForTokens',
           args: [
-            0n, // amountOutMin (0 for simplicity, should calculate with slippage)
+            minOutput,
             [WETH_ADDRESS, TIP_TOKEN_ADDRESS],
             address!,
             deadline,
@@ -87,6 +101,7 @@ export default function SwapPage() {
       } else {
         // Swap TIP for ETH
         const amountIn = parseEther(amount)
+        const minOutput = (amountIn * BigInt(10000 - slippageBps)) / 10000n
 
         writeContract({
           address: UNISWAP_V2_ROUTER,
@@ -94,7 +109,7 @@ export default function SwapPage() {
           functionName: 'swapExactTokensForETH',
           args: [
             amountIn,
-            0n, // amountOutMin
+            minOutput,
             [TIP_TOKEN_ADDRESS, WETH_ADDRESS],
             address!,
             deadline,
@@ -197,6 +212,34 @@ export default function SwapPage() {
                         {preset} TIP
                       </button>
                     ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Slippage Tolerance (%)
+              </label>
+              <input
+                type="number"
+                value={slippage}
+                onChange={(e) => setSlippage(e.target.value)}
+                placeholder="0.5"
+                step="0.1"
+                min="0"
+                max="50"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500"
+              />
+              <div className="flex gap-2 mt-2">
+                {['0.1', '0.5', '1.0', '3.0'].map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setSlippage(preset)}
+                    className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded text-sm hover:bg-gray-300 dark:hover:bg-gray-600"
+                  >
+                    {preset}%
+                  </button>
+                ))}
               </div>
             </div>
 

@@ -30,6 +30,7 @@ export default function BatchPage() {
   useEffect(() => {
     if (isSuccess && hash) {
       setCompletedBatches((prev) => prev + 1)
+      setCurrentBatch((prev) => prev + 1)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, hash])
