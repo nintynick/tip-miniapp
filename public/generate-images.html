@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate TIP Token Images</title>
+</head>
+<body>
+  <h1>TIP Token Image Generator</h1>
+  <p>Right-click on each canvas and "Save Image As..." with the specified filename</p>
+
+  <h2>icon-1024.png (1024x1024, no alpha)</h2>
+  <canvas id="icon1024" width="1024" height="1024"></canvas>
+
+  <h2>og-image.png (1200x630)</h2>
+  <canvas id="ogImage" width="1200" height="630"></canvas>
+
+  <h2>feed-image.png (1200x800, 3:2 ratio)</h2>
+  <canvas id="feedImage" width="1200" height="800"></canvas>
+
+  <h2>splash-200.png (200x200)</h2>
+  <canvas id="splash200" width="200" height="200"></canvas>
+
+  <script>
+    // Icon 1024x1024 (no alpha - solid background)
+    const icon1024 = document.getElementById('icon1024');
+    const ctx1024 = icon1024.getContext('2d', { alpha: false });
+
+    // Solid purple background (no alpha)
+    ctx1024.fillStyle = '#9333ea';
+    ctx1024.fillRect(0, 0, 1024, 1024);
+
+    // White circle background
+    ctx1024.fillStyle = '#ffffff';
+    ctx1024.beginPath();
+    ctx1024.arc(512, 512, 400, 0, Math.PI * 2);
+    ctx1024.fill();
+
+    // Purple lightbulb
+    ctx1024.fillStyle = '#9333ea';
+    ctx1024.font = 'bold 600px Arial';
+    ctx1024.textAlign = 'center';
+    ctx1024.textBaseline = 'middle';
+    ctx1024.fillText('💡', 512, 512);
+
+    // OG Image 1200x630
+    const ogImage = document.getElementById('ogImage');
+    const ctxOG = ogImage.getContext('2d', { alpha: false });
+
+    // Gradient background
+    const gradOG = ctxOG.createLinearGradient(0, 0, 1200, 630);
+    gradOG.addColorStop(0, '#9333ea');
+    gradOG.addColorStop(1, '#ec4899');
+    ctxOG.fillStyle = gradOG;
+    ctxOG.fillRect(0, 0, 1200, 630);
+
+    // Icon
+    ctxOG.font = 'bold 200px Arial';
+    ctxOG.textAlign = 'center';
+    ctxOG.textBaseline = 'middle';
+    ctxOG.fillText('💡', 300, 315);
+
+    // Text
+    ctxOG.fillStyle = '#ffffff';
+    ctxOG.font = 'bold 120px Arial';
+    ctxOG.fillText('TIP Token', 750, 250);
+
+    ctxOG.font = '48px Arial';
+    ctxOG.fillText('Tip, trade, and manage', 750, 360);
+    ctxOG.fillText('TIP tokens on Base', 750, 420);
+
+    // Feed Image 1200x800 (3:2)
+    const feedImage = document.getElementById('feedImage');
+    const ctxFeed = feedImage.getContext('2d', { alpha: false });
+
+    // Gradient background
+    const gradFeed = ctxFeed.createLinearGradient(0, 0, 1200, 800);
+    gradFeed.addColorStop(0, '#9333ea');
+    gradFeed.addColorStop(1, '#ec4899');
+    ctxFeed.fillStyle = gradFeed;
+    ctxFeed.fillRect(0, 0, 1200, 800);
+
+    // Icon
+    ctxFeed.font = 'bold 250px Arial';
+    ctxFeed.textAlign = 'center';
+    ctxFeed.textBaseline = 'middle';
+    ctxFeed.fillText('💡', 600, 350);
+
+    // Text
+    ctxFeed.fillStyle = '#ffffff';
+    ctxFeed.font = 'bold 100px Arial';
+    ctxFeed.fillText('TIP Token', 600, 600);
+
+    ctxFeed.font = '48px Arial';
+    ctxFeed.fillText('Daily tip allowances on Base', 600, 700);
+
+    // Splash 200x200
+    const splash200 = document.getElementById('splash200');
+    const ctxSplash = splash200.getContext('2d', { alpha: false });
+
+    // Solid background
+    ctxSplash.fillStyle = '#9333ea';
+    ctxSplash.fillRect(0, 0, 200, 200);
+
+    // White circle
+    ctxSplash.fillStyle = '#ffffff';
+    ctxSplash.beginPath();
+    ctxSplash.arc(100, 100, 80, 0, Math.PI * 2);
+    ctxSplash.fill();
+
+    // Lightbulb
+    ctxSplash.fillStyle = '#9333ea';
+    ctxSplash.font = 'bold 120px Arial';
+    ctxSplash.textAlign = 'center';
+    ctxSplash.textBaseline = 'middle';
+    ctxSplash.fillText('💡', 100, 100);
+  </script>
+</body>
+</html>

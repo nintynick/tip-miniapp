@@ -11,9 +11,10 @@ export const metadata: Metadata = {
     description: "Tip, trade, and manage TIP tokens on Base",
     images: [
       {
-        url: "https://tip-miniapp.vercel.app/icon-192.png",
-        width: 192,
-        height: 192,
+        url: "https://tip-miniapp.vercel.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TIP Token - Tip, trade, and manage TIP tokens on Base",
       },
     ],
   },
@@ -25,14 +26,14 @@ export const metadata: Metadata = {
   other: {
     'fc:miniapp': JSON.stringify({
       version: "1",
-      imageUrl: "https://tip-miniapp.vercel.app/preview.svg",
+      imageUrl: "https://tip-miniapp.vercel.app/feed-image.png",
       button: {
         title: "TIP Token",
         action: {
           type: "launch_frame",
           name: "TIP Token",
           url: "https://tip-miniapp.vercel.app",
-          splashImageUrl: "https://tip-miniapp.vercel.app/splash.svg",
+          splashImageUrl: "https://tip-miniapp.vercel.app/splash-200.png",
           splashBackgroundColor: "#9333ea"
         }
       }

@@ -7,9 +7,9 @@
   "miniapp": {
     "version": "1",
     "name": "TIP Token",
-    "iconUrl": "https://tip-miniapp.vercel.app/icon-192.svg",
+    "iconUrl": "https://tip-miniapp.vercel.app/icon-1024.png",
     "homeUrl": "https://tip-miniapp.vercel.app",
-    "splashImageUrl": "https://tip-miniapp.vercel.app/splash.svg",
+    "splashImageUrl": "https://tip-miniapp.vercel.app/splash-200.png",
     "splashBackgroundColor": "#9333ea",
     "webhookUrl": "https://tip-miniapp.vercel.app"
   }
