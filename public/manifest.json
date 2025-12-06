@@ -25,6 +25,6 @@
     "iconUrl": "/icon-192.png",
     "splashImageUrl": "/splash.png",
     "splashBackgroundColor": "#9333ea",
-    "webhookUrl": ""
+    "webhookUrl": "https://tip-miniapp.vercel.app"
   }
 }
